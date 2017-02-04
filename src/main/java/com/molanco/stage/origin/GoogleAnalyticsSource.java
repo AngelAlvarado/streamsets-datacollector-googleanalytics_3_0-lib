@@ -53,7 +53,7 @@ public abstract class GoogleAnalyticsSource extends BaseSource {
 
   public abstract String getService_account();
 
-  public abstract String getAppication_name();
+  public abstract String getApplication_name();
 
   public abstract String getMetrics();
 
@@ -86,7 +86,7 @@ public abstract class GoogleAnalyticsSource extends BaseSource {
       );
     }
 
-    if (getAppication_name().equals("invalidValue")) {
+    if (getApplication_name().equals("invalidValue")) {
       issues.add(
               getContext().createConfigIssue(
                       Groups.SAMPLE.name(), "Application_Name", Errors.SAMPLE_00, "Here's what's wrong..."
@@ -175,16 +175,13 @@ public abstract class GoogleAnalyticsSource extends BaseSource {
       // Create records and add to batch. Records must have a string id. This can include the source offset
       // or other metadata to help uniquely identify the record itself.
 
-      OAuth2ClientCredentials.setAPPLICATION_NAME(getAppication_name());
+      OAuth2ClientCredentials.setAPPLICATION_NAME(getApplication_name());
       OAuth2ClientCredentials.setPATH_P12KEY_SERVICE_ACCOUNT(getConfig());
       OAuth2ClientCredentials.setSERVICE_ACCOUNT_EMAIL(getService_account());
       GaData datas = LoadGoogleAnalyticsData.loadData(getStart_date(), getEnd_date(), getMetrics(), getDimensions());
       List<List<String>> rows =   datas.getRows();
 
       Iterator<List<String>>   iterato = rows.iterator();
-
-
-
 
       while (numRecords < maxBatchSize && iterato.hasNext()) {
         List<String> row = iterato.next();
@@ -203,7 +200,6 @@ public abstract class GoogleAnalyticsSource extends BaseSource {
         for(int i=0;i<dataRecordMetrics.length;i++){
           map.put(dataRecordMetrics[i].split(":")[1], Field.create(row.get(i+mStart)));
         }
-
         record.set(Field.create(map));
         batchMaker.addRecord(record);
         ++nextSourceOffset;

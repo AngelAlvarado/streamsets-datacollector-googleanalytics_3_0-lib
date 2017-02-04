@@ -52,7 +52,7 @@ public class GoogleAnalyticsDSource extends GoogleAnalyticsSource {
      */
     @Override
 
-    public String getAppication_name() {
+    public String getApplication_name() {
         return application_name;
     }
 
